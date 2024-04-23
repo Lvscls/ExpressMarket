@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details</title>
+    <title>Inscription</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div id="navbar" class="bg-white shadow-md p-4"></div>
-    <div id="productDetails" class="max-w-4xl mx-auto px-4 py-8">
-        <!-- Contenu des détails du produit sera ajouté ici -->
+    <div class="bg-gray-100 min-h-screen flex justify-center items-center">
+        <div class="bg-white p-8 rounded shadow-md w-96">
+            <h1 class="text-2xl font-bold mb-4">Inscription</h1>
+            <div id="signupFormContainer"></div>
+        </div>
     </div>
-    <script src="../pages/product-details.js" type="module"></script>
+    <script src="./utils/signup.js" type="module"></script>
     <script src="./components/navbar.js" type="module"></script>
 </body>
+
 </html>

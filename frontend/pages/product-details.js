@@ -1,4 +1,4 @@
-import { getProductById } from '../utils.js';
+import { getProductById } from '../utils/productById.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
