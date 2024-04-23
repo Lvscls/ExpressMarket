@@ -1,5 +1,6 @@
 export const products = [
     {
+        id: 1,
         name: 'Pain',
         description: 'Pain de qualité supérieure.',
         price: 2.18
@@ -51,25 +52,28 @@ export const products = [
     }
 ];
 
-export function displayProducts(productListElement, filteredProducts,query) {
+export function displayProducts(productListElement, filteredProducts, query) {
     try {
-
         productListElement.innerHTML = '';
 
         const productGrid = document.createElement('div');
         productGrid.classList.add('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'gap-4');
+        
         const productsToDisplay = filteredProducts || products.filter(product =>
             product.name.toLowerCase().includes(query.toLowerCase()) ||
             product.description.toLowerCase().includes(query.toLowerCase())
         );
+
         productsToDisplay.forEach(product => {
             const productElement = document.createElement('div');
             productElement.innerHTML = `
-              <div class="bg-white p-4 rounded-lg shadow-md">
-                <h3 class="text-lg font-semibold">${product.name}</h3>
-                <p class="text-gray-600">${product.description}</p>
-                <p class="text-gray-800 font-bold mt-2">${product.price} €</p>
-              </div>
+                <a href="product-details.html?id=${product.id}">
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold">${product.name}</h3>
+                        <p class="text-gray-600">${product.description}</p>
+                        <p class="text-gray-800 font-bold mt-2">${product.price} €</p>
+                    </div>
+                </a>
             `;
             productGrid.appendChild(productElement);
         });
@@ -79,3 +83,4 @@ export function displayProducts(productListElement, filteredProducts,query) {
         console.error('Error fetching products:', error);
     }
 }
+
