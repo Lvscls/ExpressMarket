@@ -49,9 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const signupForm = createSignupForm();
     signupFormContainer.appendChild(signupForm);
 
+    const messageContainer = document.getElementById('messageContainer'); // Référence à la zone de message
+
     signupForm.addEventListener('submit', function(event) {
         event.preventDefault(); 
-
 
         const username = signupForm.username.value;
         const password = signupForm.password.value;
@@ -77,13 +78,22 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) {
                 throw new Error('Erreur lors de la requête');
             }
-            return response.json();
+            return response
         })
         .then(data => {
             console.log('Inscription réussie:', data);
+            const messageContainer = document.createElement('div');
+            messageContainer.id = 'messageContainer';
+            messageContainer.textContent = 'Inscription réussie !';
+            messageContainer.classList.add('bg-green-100', 'border', 'border-green-400', 'text-green-700', 'px-4', 'py-3', 'rounded', 'relative', 'mt-4');
+            signupFormContainer.appendChild(messageContainer);
+            signupForm.username.value = '';
+            signupForm.password.value = '';
+            signupForm.passwordConfirm.value = '';
         })
         .catch(error => {
             console.error('Erreur:', error.message);
         });
     });
 });
+
