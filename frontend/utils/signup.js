@@ -1,4 +1,5 @@
 import { createNavbar } from '../components/navbar.js';
+import { backendUrl } from './constant.js';
 
 const navbarElement = document.getElementById('navbar');
 createNavbar(navbarElement);
@@ -47,4 +48,47 @@ document.addEventListener('DOMContentLoaded', function() {
     const signupFormContainer = document.getElementById('signupFormContainer');
     const signupForm = createSignupForm();
     signupFormContainer.appendChild(signupForm);
+});
+document.addEventListener('DOMContentLoaded', function() {
+    const signupFormContainer = document.getElementById('signupFormContainer');
+    const signupForm = createSignupForm();
+    signupFormContainer.appendChild(signupForm);
+
+    signupForm.addEventListener('submit', function(event) {
+        event.preventDefault(); 
+
+
+        const username = signupForm.username.value;
+        const password = signupForm.password.value;
+        const passwordConfirm = signupForm.passwordConfirm.value;
+        if (password !== passwordConfirm) {
+            console.error("Les mots de passe ne correspondent pas");
+            return; 
+        }
+
+        const formData = {
+            username: username,
+            password: password
+        };
+
+        fetch(`${backendUrl}/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur lors de la requête');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Inscription réussie:', data);
+        })
+        .catch(error => {
+            console.error('Erreur:', error.message);
+        });
+    });
 });
