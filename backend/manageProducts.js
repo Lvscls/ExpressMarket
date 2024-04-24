@@ -4,22 +4,31 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./database.db');
 
 router.post('/', (req, res) => {
-    const { name, category_id, price, description, image_path } = req.body;
+    const { name, category_id, price, description, images } = req.body;
+
     db.run('INSERT INTO Products (name, category_id, price, description) VALUES (?, ?, ?, ?)', [name, category_id, price, description], function(err) {
-      if (err) {
-        console.error(err);
-        return res.status(500).send('Erreur serveur');
-      }
-      const productId = this.lastID;
-      db.run('INSERT INTO ProductImages (product_id, image_path) VALUES (?, ?)', [productId, image_path], function(err) {
         if (err) {
-          console.error(err);
-          return res.status(500).send('Erreur serveur');
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
         }
+        const productId = this.lastID;
+
+        if (images) {
+            images.forEach(image => {
+                db.run('INSERT INTO ProductImages (product_id, image_path) VALUES (?, ?)', [productId, image], function(err) {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).send('Erreur serveur');
+                    }
+                });
+            });
+        }
+
         res.status(201).send(`Produit ajouté avec l'ID: ${productId}`);
-      });
     });
-  });
+});
+
+
   
   router.put('/:id', (req, res) => {
     const productId = req.params.id;

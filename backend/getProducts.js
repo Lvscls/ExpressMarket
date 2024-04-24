@@ -9,7 +9,6 @@ router.get('/', (req, res) => {
       console.error(err);
       return res.status(500).send('Erreur serveur');
     }
-    // Transforming the concatenated image paths into arrays
     rows.forEach(row => {
       row.image_paths = row.image_paths ? row.image_paths.split(',') : [];
     });
