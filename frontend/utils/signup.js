@@ -43,12 +43,7 @@ function createSignupForm() {
     return form;
 }
 
-// Ajouter le formulaire d'inscription à la page
-document.addEventListener('DOMContentLoaded', function() {
-    const signupFormContainer = document.getElementById('signupFormContainer');
-    const signupForm = createSignupForm();
-    signupFormContainer.appendChild(signupForm);
-});
+
 document.addEventListener('DOMContentLoaded', function() {
     const signupFormContainer = document.getElementById('signupFormContainer');
     const signupForm = createSignupForm();
