@@ -28,7 +28,6 @@ export function displayProducts(productListElement, products, isAdmin) {
 
         const productGrid = document.createElement('div');
         productGrid.classList.add('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'gap-4');
-
         products.forEach(product => {
             const productElement = document.createElement('div');
             productElement.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-md');
