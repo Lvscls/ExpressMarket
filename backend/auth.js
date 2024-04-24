@@ -2,9 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const sqlite3 = require('sqlite3').verbose();
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const router = express.Router();
 const db = new sqlite3.Database('./database.db');
+
+const secretKey = process.env.SECRET_KEY;
 
 router.use(bodyParser.json());
 
@@ -96,12 +100,13 @@ router.post('/login', async (req, res) => {
         return res.status(401).send('Nom d\'utilisateur ou mot de passe incorrect');
       }
 
-      res.send('Connexion réussie');
+      const token = jwt.sign({ username: row.username }, secretKey, { expiresIn: '1h' });
+
+      res.json({ token });
     });
   } catch (error) {
     console.error(error);
     res.status(500).send('Erreur serveur');
   }
 });
-
 module.exports = router;

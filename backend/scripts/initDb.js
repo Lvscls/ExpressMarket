@@ -41,17 +41,17 @@ db.serialize(() => {
 )`);
 
     const productImagesData = [
-    { product_id: 1, image_path: "chargeur.jpg" },
-    { product_id: 2, image_path: "iphone15.jpg" },
-    { product_id: 3, image_path: "ipad2.jpg" },
-    { product_id: 4, image_path: "airpods.jpg" },
-    { product_id: 5, image_path: "applewatch.jpg" },
-    { product_id: 6, image_path: "airpodspro.jpg" },
-    { product_id: 7, image_path: "iphone14.jpg" },
-    { product_id: 8, image_path: "airpods2.jpg" },
-    { product_id: 9, image_path: "applevisionpro.jpg" },
-    { product_id: 10, image_path: "coque.jpg" },
-    { product_id: 2, image_path: "iphone15-2.jpg" },
+    { product_id: 1, image_path: "chargeur.png" },
+    { product_id: 2, image_path: "iphone15.png" },
+    { product_id: 3, image_path: "ipad2.png" },
+    { product_id: 4, image_path: "airpods.png" },
+    { product_id: 5, image_path: "applewatch.png" },
+    { product_id: 6, image_path: "airpodspro.png" },
+    { product_id: 7, image_path: "iphone14.png" },
+    { product_id: 8, image_path: "airpods2.png" },
+    { product_id: 9, image_path: "applevisionpro.png" },
+    { product_id: 10, image_path: "coque.png" },
+    { product_id: 2, image_path: "iphone15-2.png" },
     ];
 
     const insertProductImage = db.prepare('INSERT INTO ProductImages (product_id, image_path) VALUES (?, ?)');
