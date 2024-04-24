@@ -1,6 +1,7 @@
 // products.js
 
 import { backendUrl } from "../utils/constant";
+import { deleteProduct } from "../utils/deleteProduct";
 
 export async function fetchProducts() {
     try {
@@ -15,7 +16,7 @@ export async function fetchProducts() {
 }
 
 export function filterProducts(products, query) {
-    return products.filter(product => 
+    return products.filter(product =>
         product.name.toLowerCase().includes(query.toLowerCase()) ||
         product.description.toLowerCase().includes(query.toLowerCase())
     );
@@ -27,7 +28,7 @@ export function displayProducts(productListElement, products, isAdmin) {
 
         const productGrid = document.createElement('div');
         productGrid.classList.add('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'gap-4');
-        
+
         products.forEach(product => {
             const productElement = document.createElement('div');
             productElement.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-md');
@@ -58,12 +59,33 @@ export function displayProducts(productListElement, products, isAdmin) {
                 deleteButton.textContent = 'Supprimer';
                 deleteButton.classList.add('bg-red-500', 'text-white', 'py-1', 'px-2', 'rounded-md', 'hover:bg-red-600', 'transition-colors');
 
-                deleteButton.addEventListener('click', () => {
+                deleteButton.addEventListener('click', async () => {
+                    try {
+                        const productId = product.id; 
+                        const result = await deleteProduct(productId);
+                        console.log('Produit supprimé avec succès:', result);
+                        const productParentElement = deleteButton.parentNode;
 
-                    console.log(`Supprimer le produit avec l'ID ${product.id}`);
+                        // Supprimer cet élément parent
+                        if (productParentElement) {
+                            productParentElement.remove();
+                        } else {
+                            console.error('Impossible de trouver l\'élément parent du produit à supprimer.');
+                        }
+                    } catch (error) {
+                        console.error('Erreur lors de la suppression du produit:', error);
+                    }
+                });
+                
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Modifier';
+                editButton.classList.add('bg-blue-500', 'text-white', 'py-1', 'px-2', 'rounded-md', 'hover:bg-blue-600', 'transition-colors');
+                editButton.addEventListener('click', () => {
+                    window.location.href = `product-edit.html?id=${product.id}`;
                 });
 
                 productElement.appendChild(deleteButton);
+                productElement.appendChild(editButton);
             }
 
             productLink.appendChild(productName);

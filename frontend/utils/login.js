@@ -63,10 +63,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) {
                 throw new Error('Erreur lors de la requête');
             }
-            return response; 
+            return response.json(); 
         })
         .then(data => {
             console.log('Connexion réussie:', data);
+            const token = data.token; 
+            localStorage.setItem('token', token);
+
             window.location.href = '/dashboard'; 
         })
         .catch(error => {

@@ -1,5 +1,5 @@
 export function createNavbar(navbarElement) {
-  const jwtToken = localStorage.getItem('jwt'); // Récupère le JWT depuis le localStorage
+  const jwtToken = localStorage.getItem('token'); // Récupère le JWT depuis le localStorage
 
   const links = document.createElement('ul');
   links.classList.add('flex', 'space-x-4');
@@ -26,20 +26,19 @@ export function createNavbar(navbarElement) {
   logoutLink.innerHTML = '<button>Deconnexion</button>';
   logoutLink.addEventListener('click', () => {
       // Déconnexion: Supprimer le JWT du localStorage
-      localStorage.removeItem('jwt');
+      localStorage.removeItem('token');
       window.location.href = '/'; // Redirection vers la page d'accueil après déconnexion
   });
 
   if (jwtToken) { // Vérifie si un JWT est présent dans le localStorage
       links.appendChild(homeLink);
       links.appendChild(dashboardLink);
-      //links.appendChild(backOfficeLink);
+      links.appendChild(backOfficeLink);
       links.appendChild(logoutLink);
   } else {
       links.appendChild(homeLink);
       links.appendChild(signupLink);
       links.appendChild(loginLink);
-      links.appendChild(backOfficeLink)
       links.appendChild(statisticLink);
   }
 
