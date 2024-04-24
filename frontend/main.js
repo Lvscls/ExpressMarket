@@ -1,24 +1,22 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import { createNavbar } from './components/navbar.js';
+import { displayProducts, products } from './pages/products.js';
+import { SearchBar } from './components/searchBar.js';
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+document.addEventListener('DOMContentLoaded', async () => {
+  const navbarElement = document.getElementById('navbar');
+  createNavbar(navbarElement);
+  const productListElement = document.getElementById('productList');
+  displayProducts(productListElement, products);
 
-setupCounter(document.querySelector('#counter'))
+  const filterProducts = (query) => {
+    const filteredProducts = products.filter(product => 
+        product.name.toLowerCase().includes(query.toLowerCase()) ||
+        product.description.toLowerCase().includes(query.toLowerCase())
+    );
+    displayProducts(productListElement, filteredProducts, query);
+};
+
+  const searchBarElement = document.getElementById('searchBar');
+  const searchBar = SearchBar({ onSearch: filterProducts });
+  searchBarElement.appendChild(searchBar);
+});
