@@ -7,6 +7,7 @@ const authenticate = require('./middleware');
 const productsRouter = require('./getProducts');
 const manageProductsRouter = require('./manageProducts');
 const categoriesRouter = require('./getCategories');
+const statsRouter = require('./stats');
 
 const app = express();
 const port = 5000;
@@ -23,6 +24,8 @@ app.use(authRouter);
 app.use('/products', productsRouter);
 
 app.use('/categories', categoriesRouter);
+
+app.use('/stats', cors(), statsRouter);
 
 app.use(authenticate);
 
