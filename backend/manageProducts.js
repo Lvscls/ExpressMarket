@@ -4,6 +4,7 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./database.db');
 
 router.post('/', (req, res) => {
+
     const { name, category_id, price, description, images } = req.body;
 
     db.run('INSERT INTO Products (name, category_id, price, description) VALUES (?, ?, ?, ?)', [name, category_id, price, description], function(err) {
@@ -27,8 +28,6 @@ router.post('/', (req, res) => {
         res.status(201).send(`Produit ajouté avec l'ID: ${productId}`);
     });
 });
-
-
   
   router.put('/:id', (req, res) => {
     const productId = req.params.id;
