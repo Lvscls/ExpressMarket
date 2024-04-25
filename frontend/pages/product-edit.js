@@ -9,6 +9,7 @@ async function updateProductForm(product, categories) {
     form.id = 'productForm';
     form.classList.add('space-y-4', 'max-w-md', 'mx-auto', 'p-6', 'bg-white', 'rounded-md', 'shadow-md');
 
+   
     const createLabelElement = (textContent) => {
         const label = document.createElement('label');
         label.textContent = textContent;
@@ -92,8 +93,28 @@ async function updateProductForm(product, categories) {
     csrfInput.value = csrfToken;
     // Ajout du champ caché au formulaire
     form.appendChild(csrfInput);
+    
 
     return form;
+}
+const createValidationMessageElement = () => {
+    const validationMessage = document.createElement('div');
+    validationMessage.id = 'validationMessage';
+    validationMessage.classList.add('text-green-500', 'mt-2'); // Ajoutez des classes pour le style si nécessaire
+    return validationMessage;
+};
+function showValidationMessage(message) {
+    const validationMessageElement = document.getElementById('validationMessage');
+    if (!validationMessageElement) {
+        // Créer l'élément de message de validation s'il n'existe pas
+        const form = document.getElementById('productForm');
+        const newValidationMessageElement = createValidationMessageElement();
+        form.appendChild(newValidationMessageElement);
+        newValidationMessageElement.textContent = message;
+    } else {
+        // Mettre à jour le contenu du message de validation s'il existe déjà
+        validationMessageElement.textContent = message;
+    }
 }
 
 // Fonction pour initialiser la page
@@ -130,6 +151,7 @@ async function initializePage() {
             try {
                 // Appeler la fonction pour mettre à jour le produit
                 const updated = await updateProduct(productId, updatedProduct);
+                showValidationMessage('La mise à jour du produit a été effectuée avec succès.');
                 console.log(updated)
             } catch (error) {
                 console.error('Erreur lors de la mise à jour du produit:', error);
