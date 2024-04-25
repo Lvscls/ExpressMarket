@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const sqlite3 = require('sqlite3').verbose();
+const csrf = require('csrf');
 const db = new sqlite3.Database('./database.db');
+
+const tokens = new csrf();
 
 const csrfProtection = (req, res, next) => {
   const secret = 'secret';
@@ -37,21 +40,15 @@ router.post('/', csrfProtection,(req, res) => {
   });
 });
 
-router.put('/:id', csrfProtection,(req, res) => {
+router.put('/:id', csrfProtection, (req, res) => {
   const productId = req.params.id;
-  const { name, category_id, price, description, image_path } = req.body;
+  const { name, category_id, price, description } = req.body; 
   db.run('UPDATE Products SET name = ?, category_id = ?, price = ?, description = ? WHERE id = ?', [name, category_id, price, description, productId], function (err) {
     if (err) {
       console.error(err);
       return res.status(500).send('Erreur serveur');
     }
-    db.run('UPDATE ProductImages SET image_path = ? WHERE product_id = ?', [image_path, productId], function (err) {
-      if (err) {
-        console.error(err);
-        return res.status(500).send('Erreur serveur');
-      }
-      res.send(`Produit avec l'ID ${productId} modifié`);
-    });
+    res.send(`Produit avec l'ID ${productId} modifié`);
   });
 });
 
