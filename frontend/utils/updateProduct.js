@@ -1,5 +1,6 @@
 import { backendUrl } from "./constant";
 
+
 export async function updateProduct(productId, updatedData) {
     console.log(updatedData)
     try {
@@ -13,7 +14,8 @@ export async function updateProduct(productId, updatedData) {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` 
+                'Authorization': `Bearer ${token}` ,
+                'X-CSRF-TOKEN': updatedData._csrf
             },
             body: JSON.stringify(updatedData) 
         };
