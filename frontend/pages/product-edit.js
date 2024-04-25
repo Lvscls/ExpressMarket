@@ -2,8 +2,9 @@ import { getProductDetails } from '../utils/getProductDetails.js';
 import { createNavbar } from '../components/navbar.js';
 import { fetchCategories } from '../utils/fetchCategories.js';
 import { updateProduct } from '../utils/updateProduct.js'
+import { fetchCSRFToken } from '../utils/fetchCsrfToken.js';
 
-function updateProductForm(product, categories) {
+async function updateProductForm(product, categories) {
     const form = document.createElement('form');
     form.id = 'productForm';
     form.classList.add('space-y-4', 'max-w-md', 'mx-auto', 'p-6', 'bg-white', 'rounded-md', 'shadow-md');
@@ -40,7 +41,7 @@ function updateProductForm(product, categories) {
         const select = document.createElement('select');
         select.name = name;
         select.classList.add('w-full', 'px-3', 'py-2', 'border', 'border-gray-300', 'rounded-md', 'focus:outline-none', 'focus:border-blue-500');
-        
+
         categories.forEach(category => {
             const option = document.createElement('option');
             option.value = category.id;
@@ -50,7 +51,7 @@ function updateProductForm(product, categories) {
             }
             select.appendChild(option);
         });
-        
+
         return select;
     };
 
@@ -82,6 +83,16 @@ function updateProductForm(product, categories) {
     form.appendChild(categoryDropdown);
     form.appendChild(submitButton);
 
+    // Ajout du champ caché pour le jeton CSRF
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_csrf';
+    // Récupérer la valeur du jeton CSRF du cookie
+    const csrfToken = await fetchCSRFToken();
+    csrfInput.value = csrfToken;
+    // Ajout du champ caché au formulaire
+    form.appendChild(csrfInput);
+
     return form;
 }
 
@@ -99,7 +110,7 @@ async function initializePage() {
         const [product, categories] = await Promise.all([getProductDetails(productId), fetchCategories()]);
 
         // Créer le formulaire de modification de produit avec les champs pré-remplis
-        const productForm = updateProductForm(product, categories);
+        const productForm = await updateProductForm(product, categories); // Attendre la résolution de la promesse
 
         // Ajouter le formulaire au conteneur dans le DOM
         productFormContainer.appendChild(productForm);
@@ -130,3 +141,4 @@ async function initializePage() {
 }
 
 document.addEventListener('DOMContentLoaded', initializePage);
+

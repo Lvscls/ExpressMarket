@@ -14,7 +14,8 @@ export async function createProduct(productData) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` 
+                'Authorization': `Bearer ${token}`,
+                'X-CSRF-TOKEN': productData._csrf 
             },
             body: JSON.stringify(productData) 
         };

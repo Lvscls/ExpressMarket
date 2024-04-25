@@ -2,9 +2,10 @@ import { displayProducts, fetchProducts } from '../pages/products.js';
 import { createNavbar } from '../components/navbar.js';
 import { fetchCategories } from '../utils/fetchCategories.js';
 import { createProduct } from '../utils/createProduct.js';
+import { fetchCSRFToken } from '../utils/fetchCsrfToken.js';
 
 // Fonction pour créer le formulaire de produit
-function createProductForm(categories, csrfToken) {
+async function createProductForm(categories) {
     const createInputElement = (type, name, placeholder, required) => {
         const input = document.createElement('input');
         input.type = type;
@@ -82,14 +83,16 @@ function createProductForm(categories, csrfToken) {
     form.appendChild(categoryDropdown);
     form.appendChild(submitButton);
 
-        // Création du champ caché pour le jeton CSRF
-        const csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = '_csrf';
-        csrfInput.value = csrfToken;
-    
-        // Ajout du champ caché au formulaire
-        form.appendChild(csrfInput);
+    // Ajout du champ caché pour le jeton CSRF
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_csrf';
+    // Récupérer la valeur du jeton CSRF du cookie
+    const csrfToken = await fetchCSRFToken();
+
+    csrfInput.value = csrfToken;
+    // Ajout du champ caché au formulaire
+    form.appendChild(csrfInput);
 
     return form;
 }
@@ -107,7 +110,10 @@ async function initializePage() {
 
         displayProducts(productListElement, products, true);
 
-        const productForm = createProductForm(categories);
+        // Appeler createProductForm et attendre la résolution de la promesse
+        const csrfToken = await fetchCSRFToken(); // Récupérer le jeton CSRF
+
+        const productForm = await createProductForm(categories); // Attendre la création du formulaire
         productFormContainer.appendChild(productForm);
 
         // Écouter l'événement de soumission du formulaire
@@ -121,13 +127,14 @@ async function initializePage() {
                 images: []
             }
             const imagesFiles = productForm.elements.images.files;
-    for (const file of imagesFiles) {
-        body.images.push(file.name);
-    }
+            for (const file of imagesFiles) {
+                body.images.push(file.name);
+            }
+            body._csrf = csrfToken; // Utiliser le jeton CSRF récupéré
+
         
             try {
                 // Créer le produit en envoyant les données du formulaire
-
                 const response = await createProduct(body);
         
                 // Afficher un message de succès ou effectuer d'autres actions
@@ -143,4 +150,5 @@ async function initializePage() {
 }
 
 document.addEventListener('DOMContentLoaded', initializePage);
+
 
