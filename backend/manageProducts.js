@@ -4,32 +4,29 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./database.db');
 
 router.post('/', (req, res) => {
-  const { name, category_id, price, description, images } = req.body;
 
-  // Insérer le produit dans la table Products
-  db.run('INSERT INTO Products (name, category_id, price, description) VALUES (?, ?, ?, ?)', [name, category_id, price, description], function(err) {
-      if (err) {
-          console.error(err);
-          return res.status(500).send('Erreur serveur');
-      }
-      const productId = this.lastID;
+    const { name, category_id, price, description, images } = req.body;
 
-      // Vérifier s'il y a des images à insérer
-      if (images && Array.isArray(images)) {
-          // Parcourir chaque image et l'insérer dans la table ProductImages
-          images.forEach(image => {
-              db.run('INSERT INTO ProductImages (product_id, image_path) VALUES (?, ?)', [productId, image], function(err) {
-                  if (err) {
-                      console.error(err);
-                      return res.status(500).send('Erreur serveur');
-                  }
-              });
-          });
-      }
+    db.run('INSERT INTO Products (name, category_id, price, description) VALUES (?, ?, ?, ?)', [name, category_id, price, description], function(err) {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erreur serveur');
+        }
+        const productId = this.lastID;
 
-      // Envoyer une réponse réussie avec l'ID du produit
-      res.status(201).send(`Produit ajouté avec l'ID: ${productId}`);
-  });
+        if (images) {
+            images.forEach(image => {
+                db.run('INSERT INTO ProductImages (product_id, image_path) VALUES (?, ?)', [productId, image], function(err) {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).send('Erreur serveur');
+                    }
+                });
+            });
+        }
+
+        res.status(201).send(`Produit ajouté avec l'ID: ${productId}`);
+    });
 });
   
   router.put('/:id', (req, res) => {
