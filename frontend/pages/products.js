@@ -1,5 +1,3 @@
-// products.js
-
 import { backendUrl } from "../utils/constant";
 import { deleteProduct } from "../utils/deleteProduct";
 
@@ -73,7 +71,6 @@ export function displayProducts(productListElement, products, isAdmin) {
             
                     localStorage.setItem('cart', JSON.stringify(cart));
             
-                    // Afficher un message ou effectuer toute autre action après avoir ajouté le produit au panier
                     console.log('Produit ajouté au panier:', product);
                 });
             
@@ -81,7 +78,6 @@ export function displayProducts(productListElement, products, isAdmin) {
                 productPrice.textContent = `${product.price} €`;
             
                 productElement.appendChild(addToCartButton);
-                productElement.appendChild(productPrice);
             }
             
 
@@ -98,7 +94,7 @@ export function displayProducts(productListElement, products, isAdmin) {
                         console.log('Produit supprimé avec succès:', result);
                         const productParentElement = deleteButton.parentNode;
 
-                        // Supprimer cet élément parent
+    
                         if (productParentElement) {
                             productParentElement.remove();
                         } else {

@@ -15,7 +15,7 @@ async function deleteProduct(productId) {
             throw new Error('La suppression du produit a échoué');
         }
 
-        return response; // Vous pouvez renvoyer une réponse JSON si nécessaire
+        return response; 
     } catch (error) {
         throw new Error(`Erreur lors de la suppression du produit : ${error.message}`);
     }

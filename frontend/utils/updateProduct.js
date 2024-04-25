@@ -5,19 +5,17 @@ export async function updateProduct(productId, updatedData) {
     try {
         const token = localStorage.getItem('token');
 
-        // Vérifier si le token existe
         if (!token) {
             throw new Error('Token d\'authentification manquant');
         }
 
-        // Construire les options pour la requête fetch
         const requestOptions = {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Ajouter le token dans l'en-tête Authorization
+                'Authorization': `Bearer ${token}` 
             },
-            body: JSON.stringify(updatedData) // Convertir les données du produit en JSON
+            body: JSON.stringify(updatedData) 
         };
 
         const response = await fetch(`${backendUrl}/manage/${productId}`, requestOptions);

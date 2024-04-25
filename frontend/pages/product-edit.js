@@ -120,7 +120,6 @@ async function initializePage() {
                 // Appeler la fonction pour mettre à jour le produit
                 const updated = await updateProduct(productId, updatedProduct);
                 console.log(updated)
-                // Rediriger ou effectuer d'autres actions si nécessaire
             } catch (error) {
                 console.error('Erreur lors de la mise à jour du produit:', error);
             }

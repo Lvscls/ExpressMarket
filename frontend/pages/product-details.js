@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             productDetailsElement.innerHTML = '<p>Product not found!</p>';
         }
     } else {
-        // Gérer le cas où aucun ID de produit n'est fourni dans l'URL
         console.error('Product ID not provided in URL');
     }
 });
