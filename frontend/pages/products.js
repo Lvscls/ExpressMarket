@@ -23,6 +23,8 @@ export function filterProducts(products, query) {
 }
 
 export function displayProducts(productListElement, products, isAdmin) {
+    const token = localStorage.getItem('token')
+    const isLogged = !!token;
     try {
         productListElement.innerHTML = '';
 
@@ -51,6 +53,37 @@ export function displayProducts(productListElement, products, isAdmin) {
             const productPrice = document.createElement('p');
             productPrice.classList.add('text-gray-800', 'font-bold', 'mt-2');
             productPrice.textContent = `${product.price} €`;
+            if (isLogged == false && !isAdmin) {
+                const addToCartButton = document.createElement('button');
+                addToCartButton.textContent = 'Ajouter au panier';
+                addToCartButton.classList.add('bg-green-500', 'text-white', 'py-1', 'px-2', 'rounded-md', 'hover:bg-green-600', 'transition-colors');
+            
+                addToCartButton.addEventListener('click', () => {
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+                    const productInCartIndex = cart.findIndex(item => item.id === product.id);
+            
+                    if (productInCartIndex !== -1) {
+                        // Si le produit est déjà dans le panier, augmentez simplement sa quantité
+                        cart[productInCartIndex].quantity++;
+                    } else {
+                        // Si le produit n'est pas dans le panier, ajoutez-le avec une quantité de 1
+                        cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
+                    }
+            
+                    localStorage.setItem('cart', JSON.stringify(cart));
+            
+                    // Afficher un message ou effectuer toute autre action après avoir ajouté le produit au panier
+                    console.log('Produit ajouté au panier:', product);
+                });
+            
+                const productPrice = document.createElement('p');
+                productPrice.textContent = `${product.price} €`;
+            
+                productElement.appendChild(addToCartButton);
+                productElement.appendChild(productPrice);
+            }
+            
 
             // Si l'utilisateur est un administrateur, ajoutez le bouton de suppression
             if (isAdmin) {
@@ -60,7 +93,7 @@ export function displayProducts(productListElement, products, isAdmin) {
 
                 deleteButton.addEventListener('click', async () => {
                     try {
-                        const productId = product.id; 
+                        const productId = product.id;
                         const result = await deleteProduct(productId);
                         console.log('Produit supprimé avec succès:', result);
                         const productParentElement = deleteButton.parentNode;
@@ -75,7 +108,7 @@ export function displayProducts(productListElement, products, isAdmin) {
                         console.error('Erreur lors de la suppression du produit:', error);
                     }
                 });
-                
+
                 const editButton = document.createElement('button');
                 editButton.textContent = 'Modifier';
                 editButton.classList.add('bg-blue-500', 'text-white', 'py-1', 'px-2', 'rounded-md', 'hover:bg-blue-600', 'transition-colors');
