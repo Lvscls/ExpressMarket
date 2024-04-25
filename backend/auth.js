@@ -100,7 +100,7 @@ router.post('/login', async (req, res) => {
         return res.status(401).send('Nom d\'utilisateur ou mot de passe incorrect');
       }
 
-      const token = jwt.sign({ username: row.username }, secretKey, { expiresIn: '1h' });
+      const token = jwt.sign({ username: row.username }, secretKey, { expiresIn: '4h' });
 
       res.json({ token });
     });
