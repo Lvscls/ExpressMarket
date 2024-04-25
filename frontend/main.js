@@ -1,22 +1,20 @@
 import { createNavbar } from './components/navbar.js';
-import { displayProducts, products } from './pages/products.js';
+import { fetchProducts, displayProducts, filterProducts } from './pages/products.js';
 import { SearchBar } from './components/searchBar.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const navbarElement = document.getElementById('navbar');
-  createNavbar(navbarElement);
-  const productListElement = document.getElementById('productList');
-  displayProducts(productListElement, products);
+    const navbarElement = document.getElementById('navbar');
+    createNavbar(navbarElement);
 
-  const filterProducts = (query) => {
-    const filteredProducts = products.filter(product => 
-        product.name.toLowerCase().includes(query.toLowerCase()) ||
-        product.description.toLowerCase().includes(query.toLowerCase())
-    );
-    displayProducts(productListElement, filteredProducts, query);
-};
+    const productListElement = document.getElementById('productList');
 
-  const searchBarElement = document.getElementById('searchBar');
-  const searchBar = SearchBar({ onSearch: filterProducts });
-  searchBarElement.appendChild(searchBar);
+    const products = await fetchProducts();
+    displayProducts(productListElement, products);
+
+    const searchBarElement = document.getElementById('searchBar');
+    const searchBar = SearchBar({ onSearch: (query) => {
+        const filteredProducts = filterProducts(products, query);
+        displayProducts(productListElement, filteredProducts);
+    }});
+    searchBarElement.appendChild(searchBar);
 });
