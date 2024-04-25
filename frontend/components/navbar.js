@@ -1,75 +1,75 @@
-// Fonction pour créer le contenu du panier dans la barre de navigation
-function createCart(cartElement) {
-    const cart = JSON.parse(localStorage.getItem('cart')) || []; // Récupère les produits du panier depuis le localStorage
+import { fetchCategoryStats } from "../utils/fetchStats";
 
-    // Calculer le nombre total d'articles dans le panier
-    const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+// Fonction pour créer un lien de navigation
+const createNavLink = (text, href, onClick = null) => {
+    const link = document.createElement('a');
+    link.textContent = text;
+    link.href = href;
+    if (onClick) {
+        link.addEventListener('click', onClick);
+    }
+    return link;
+};
 
-    // Créer le lien du panier avec le nombre total d'articles
-    const cartLink = document.createElement('a');
-    cartLink.href = '/cart'; // Lien vers la page du panier
-    cartLink.textContent = `Panier (${totalItems})`;
+// Fonction pour créer un bouton de navigation
+const createNavButton = (text, onClick) => {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.addEventListener('click', onClick);
+    return button;
+};
 
-    // Ajouter un événement de clic sur le lien du panier pour rediriger vers la page du panier
-    cartLink.addEventListener('click', (event) => {
-        event.preventDefault(); // Empêche le comportement par défaut du lien
-        window.location.href = '/cart'; // Redirige vers la page du panier
-    });
+// Fonction pour récupérer le contenu du panier
+const getCartContent = () => {
+    const cartCount = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalItems = cartCount.reduce((acc, item) => acc + item.quantity, 0);
+    return totalItems > 0 ? `Panier (${totalItems})` : 'Panier';
+};
 
-    // Ajouter le lien du panier à l'élément du panier dans la barre de navigation
-    cartElement.appendChild(cartLink);
-}
+// Fonction pour créer le contenu du panier
+const createCart = () => {
+    const cartElement = createNavLink(getCartContent(), '/cart');
+    return cartElement;
+};
 
-// Fonction pour créer la barre de navigation
-export function createNavbar(navbarElement) {
-    const jwtToken = localStorage.getItem('token'); // Récupère le JWT depuis le localStorage
+// Fonction pour ouvrir les statistiques au format JSON 
+const openCategoryStatsInNewTab = async () => {
+    try {
+        const categoryStats = await fetchCategoryStats();
+        const jsonStats = JSON.stringify(categoryStats, null, 2);
+        const blob = new Blob([jsonStats], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+    } catch (error) {
+        console.error('Erreur:', error.message);
+        alert('Erreur lors de la récupération des statistiques des catégories.');
+    }
+};
 
-    const links = document.createElement('ul');
-    links.classList.add('flex', 'space-x-4');
+// Fonction principale pour créer la navbar
+export const createNavbar = (navbarElement) => {
+    const jwtToken = localStorage.getItem('token');
+    const navbarContent = document.createElement('div');
+    navbarContent.classList.add('flex', 'space-x-4');
 
-    const homeLink = document.createElement('li');
-    homeLink.innerHTML = '<a href="/">Accueil</a>';
-
-    const signupLink = document.createElement('li');
-    signupLink.innerHTML = '<a href="/signup">Inscription</a>';
-
-    const loginLink = document.createElement('li');
-    loginLink.innerHTML = '<a href="/login">Connexion</a>';
-
-    const dashboardLink = document.createElement('li');
-    dashboardLink.innerHTML = '<a href="/dashboard">Dashboard</a>';
-
-    const backOfficeLink = document.createElement('li');
-    backOfficeLink.innerHTML = '<a href="/gestion">Gestion</a>';
-
-    const statisticLink = document.createElement('li');
-    statisticLink.innerHTML = '<a href="/statistiques">Statistiques</a>';
-
-    const logoutLink = document.createElement('li');
-    logoutLink.innerHTML = '<button>Deconnexion</button>';
-    logoutLink.addEventListener('click', () => {
-        // Déconnexion: Supprimer le JWT du localStorage
+    const homeLink = createNavLink('Accueil', '/');
+    const signupLink = createNavLink('Inscription', '/signup');
+    const loginLink = createNavLink('Connexion', '/login');
+    const dashboardLink = createNavLink('Dashboard', '/dashboard');
+    const backOfficeLink = createNavLink('Gestion', '/gestion');
+    const statisticLink = createNavLink('Statistiques', '#', openCategoryStatsInNewTab);
+    const logoutLink = createNavButton('Deconnexion', () => {
         localStorage.removeItem('token');
-        window.location.href = '/'; // Redirection vers la page d'accueil après déconnexion
+        window.location.href = '/';
     });
 
-    if (jwtToken) { // Vérifie si un JWT est présent dans le localStorage
-        links.appendChild(homeLink);
-        links.appendChild(dashboardLink);
-        links.appendChild(backOfficeLink);
-        links.appendChild(logoutLink);
+    const cartElement = jwtToken ? null : createCart();
+
+    if (jwtToken) {
+        navbarContent.append(homeLink, dashboardLink, backOfficeLink, logoutLink);
     } else {
-        links.appendChild(homeLink);
-        links.appendChild(signupLink);
-        links.appendChild(loginLink);
-        links.appendChild(statisticLink);
+        navbarContent.append(homeLink, signupLink, loginLink, statisticLink, cartElement);
     }
 
-    // Appel de la fonction createCart pour créer le contenu du panier dans la barre de navigation
-    const cartElement = document.createElement('li');
-    cartElement.id = 'cart';
-    createCart(cartElement);
-    links.appendChild(cartElement);
-
-    navbarElement.appendChild(links);
-}
+    navbarElement.appendChild(navbarContent);
+};

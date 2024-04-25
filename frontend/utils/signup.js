@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const signupForm = createSignupForm();
     signupFormContainer.appendChild(signupForm);
 
-    const messageContainer = document.getElementById('messageContainer'); // Référence à la zone de message
+    const messageContainer = document.getElementById('messageContainer'); 
 
     signupForm.addEventListener('submit', function(event) {
         event.preventDefault(); 

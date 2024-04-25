@@ -10,6 +10,6 @@ export async function getProductDetails(productId) {
         return product;
     } catch (error) {
         console.error('Error fetching product details:', error);
-        throw error; // Renvoie l'erreur pour une gestion ultérieure
+        throw error; 
     }
 }

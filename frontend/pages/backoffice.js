@@ -4,8 +4,7 @@ import { fetchCategories } from '../utils/fetchCategories.js';
 import { createProduct } from '../utils/createProduct.js';
 
 // Fonction pour créer le formulaire de produit
-function createProductForm(categories) {
-    // Fonction interne pour créer chaque élément du formulaire
+function createProductForm(categories, csrfToken) {
     const createInputElement = (type, name, placeholder, required) => {
         const input = document.createElement('input');
         input.type = type;
@@ -82,6 +81,15 @@ function createProductForm(categories) {
     form.appendChild(categoryLabel);
     form.appendChild(categoryDropdown);
     form.appendChild(submitButton);
+
+        // Création du champ caché pour le jeton CSRF
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_csrf';
+        csrfInput.value = csrfToken;
+    
+        // Ajout du champ caché au formulaire
+        form.appendChild(csrfInput);
 
     return form;
 }
