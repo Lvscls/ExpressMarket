@@ -88,6 +88,16 @@ db.serialize(() => {
         password TEXT NOT NULL
     )`);
 
+    db.run(`CREATE TABLE IF NOT EXISTS CspReports (
+      id INTEGER PRIMARY KEY,
+      documentUri TEXT,
+      referrer TEXT,
+      violatedDirective TEXT,
+      blockedUri TEXT,
+      originalPolicy TEXT,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`);
+
 });
 
 db.close();

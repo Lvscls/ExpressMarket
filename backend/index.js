@@ -23,6 +23,11 @@ app.use(cors({
 
 app.use(authRouter);
 
+app.post('/csp-report', (req, res) => {
+  const report = req.body; 
+  console.log('Violation CSP détectée :', report);
+  res.sendStatus(200); 
+});
 
 app.use('/products', productsRouter);
 
