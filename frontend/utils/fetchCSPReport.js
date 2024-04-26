@@ -6,9 +6,10 @@ export async function fetchCSPReports() {
         if (!response.ok) {
             throw new Error('Impossible de récupérer les rapports CSP.');
         }
-        const reports = await response.json();
-        displayReports(reports);
+        const reports = await response.json(); 
+        return reports; 
     } catch (error) {
         console.error(error);
+        return []; 
     }
 }

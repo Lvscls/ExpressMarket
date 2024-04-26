@@ -21,18 +21,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             `;
             productDetailsElement.innerHTML = productDetailsHTML;
 
-            // Ajouter au panier uniquement pour les utilisateurs non connectés
+
             if (!isLogged) {
                 const addToCartButton = document.createElement('button');
                 addToCartButton.textContent = 'Ajouter au panier';
                 addToCartButton.classList.add('bg-green-500', 'text-white', 'py-1', 'px-2', 'rounded-md', 'hover:bg-green-600', 'transition-colors');
 
                 addToCartButton.addEventListener('click', () => {
-                    // Ajoutez la logique pour ajouter le produit au panier ici
+
                     console.log('Produit ajouté au panier:', product);
                 });
 
-                // Ajouter le bouton "Ajouter au panier" aux détails du produit
                 productDetailsElement.appendChild(addToCartButton);
             }
         } else {

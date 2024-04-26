@@ -3,7 +3,7 @@ import { backendUrl } from './constant.js';
 
 const navbarElement = document.getElementById('navbar');
 createNavbar(navbarElement);
-// Créer le formulaire d'inscription
+
 function createSignupForm() {
     const form = document.createElement('form');
     form.id = 'signupForm';

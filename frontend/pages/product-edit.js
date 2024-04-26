@@ -106,18 +106,18 @@ const createValidationMessageElement = () => {
 function showValidationMessage(message) {
     const validationMessageElement = document.getElementById('validationMessage');
     if (!validationMessageElement) {
-        // Créer l'élément de message de validation s'il n'existe pas
+     
         const form = document.getElementById('productForm');
         const newValidationMessageElement = createValidationMessageElement();
         form.appendChild(newValidationMessageElement);
         newValidationMessageElement.textContent = message;
     } else {
-        // Mettre à jour le contenu du message de validation s'il existe déjà
+   
         validationMessageElement.textContent = message;
     }
 }
 
-// Fonction pour initialiser la page
+
 async function initializePage() {
     const navbarElement = document.getElementById('navbar');
     createNavbar(navbarElement);
@@ -127,29 +127,28 @@ async function initializePage() {
     const productFormContainer = document.getElementById('productFormContainer');
 
     try {
-        // Récupérer les détails du produit à modifier et les catégories
+    
         const [product, categories] = await Promise.all([getProductDetails(productId), fetchCategories()]);
 
-        // Créer le formulaire de modification de produit avec les champs pré-remplis
-        const productForm = await updateProductForm(product, categories); // Attendre la résolution de la promesse
+   
+        const productForm = await updateProductForm(product, categories); 
 
-        // Ajouter le formulaire au conteneur dans le DOM
+
         productFormContainer.appendChild(productForm);
 
-        // Écouter l'événement de soumission du formulaire
+
         productForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
             const formData = new FormData(productForm);
             const updatedProduct = {};
 
-            // Récupérer les valeurs du formulaire
             formData.forEach((value, key) => {
                 updatedProduct[key] = value;
             });
 
             try {
-                // Appeler la fonction pour mettre à jour le produit
+            
                 const updated = await updateProduct(productId, updatedProduct);
                 showValidationMessage('La mise à jour du produit a été effectuée avec succès.');
                 console.log(updated)
