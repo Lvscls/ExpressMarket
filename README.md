@@ -29,8 +29,8 @@
 
 ```npm i```
 
-2. Démarrer le serveur de développement pour le frontend :
+2. Démarrer le serveur de développement pour le frontend avec la config vite :
 
-```npm run dev```
+```npm run test```
 
 
