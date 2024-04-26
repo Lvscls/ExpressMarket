@@ -4,22 +4,10 @@ const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('database.db');
 
-router.use(bodyParser.json());
+
 router.post('/', (req, res) => {
-  console.log(req.body)
+  const { documentUri, referrer, violatedDirective, blockedUri, originalPolicy } = req.body;
 
-  cspReport = {}
-  if (!cspReport) {
-    return res.status(400).send('Invalid CSP report');
-  }
-
-  const {
-    documentUri,
-    referrer,
-    violatedDirective,
-    blockedUri,
-    originalPolicy
-  } = cspReport;
 
   db.run('INSERT INTO CspReports (documentUri, referrer, violatedDirective, blockedUri, originalPolicy) VALUES (?, ?, ?, ?, ?)', 
     [documentUri, referrer, violatedDirective, blockedUri, originalPolicy], 
