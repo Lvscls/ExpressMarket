@@ -9,6 +9,7 @@ const manageProductsRouter = require('./manageProducts');
 const categoriesRouter = require('./getCategories');
 const statsRouter = require('./stats');
 const csrfRouter = require('./csrf');
+const cspRouter = require('./cspReport');
 
 const app = express();
 const port = 5000;
@@ -23,11 +24,7 @@ app.use(cors({
 
 app.use(authRouter);
 
-app.post('/csp-report', (req, res) => {
-  const report = req.body; 
-  console.log('Violation CSP détectée :', report);
-  res.sendStatus(200); 
-});
+app.use('/csp-report', cspRouter);
 
 app.use('/products', productsRouter);
 

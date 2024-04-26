@@ -1,7 +1,9 @@
+const express = require('express');
+const router = express.Router();
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('database.db');
 
-router.post('/csp-report', csrfProtection, (req, res) => {
+router.post('/', csrfProtection, (req, res) => {
   const { documentUri, referrer, violatedDirective, blockedUri, originalPolicy } = req.body;
 
   db.run('INSERT INTO CspReports (documentUri, referrer, violatedDirective, blockedUri, originalPolicy) VALUES (?, ?, ?, ?, ?)', 
@@ -15,3 +17,16 @@ router.post('/csp-report', csrfProtection, (req, res) => {
     }
   );
 });
+
+router.get('/', (req, res) => {
+    db.all('SELECT * FROM CspReports', (err, rows) => {
+        if (err) {
+        console.error(err);
+        return res.status(500).send('Erreur serveur');
+        }
+    
+        res.json(rows);
+    });
+    });
+
+module.exports = router;
