@@ -1,6 +1,6 @@
 import { fetchCategoryStats } from "../utils/fetchStats";
 
-// Fonction pour créer un lien de navigation
+
 const createNavLink = (text, href, onClick = null) => {
     const link = document.createElement('a');
     link.textContent = text;
@@ -11,7 +11,7 @@ const createNavLink = (text, href, onClick = null) => {
     return link;
 };
 
-// Fonction pour créer un bouton de navigation
+
 const createNavButton = (text, onClick) => {
     const button = document.createElement('button');
     button.textContent = text;
@@ -19,20 +19,20 @@ const createNavButton = (text, onClick) => {
     return button;
 };
 
-// Fonction pour récupérer le contenu du panier
+
 const getCartContent = () => {
     const cartCount = JSON.parse(localStorage.getItem('cart')) || [];
     const totalItems = cartCount.reduce((acc, item) => acc + item.quantity, 0);
     return totalItems > 0 ? `Panier (${totalItems})` : 'Panier';
 };
 
-// Fonction pour créer le contenu du panier
+
 const createCart = () => {
     const cartElement = createNavLink(getCartContent(), '/cart');
     return cartElement;
 };
 
-// Fonction pour ouvrir les statistiques au format JSON 
+
 const openCategoryStatsInNewTab = async () => {
     try {
         const categoryStats = await fetchCategoryStats();
@@ -46,7 +46,7 @@ const openCategoryStatsInNewTab = async () => {
     }
 };
 
-// Fonction principale pour créer la navbar
+
 export const createNavbar = (navbarElement) => {
     const jwtToken = localStorage.getItem('token');
     const navbarContent = document.createElement('div');
@@ -58,6 +58,7 @@ export const createNavbar = (navbarElement) => {
     const dashboardLink = createNavLink('Dashboard', '/dashboard');
     const backOfficeLink = createNavLink('Gestion', '/gestion');
     const statisticLink = createNavLink('Statistiques', '#', openCategoryStatsInNewTab);
+    const reportLink = createNavLink('Rapports', '/report')
     const logoutLink = createNavButton('Deconnexion', () => {
         localStorage.removeItem('token');
         window.location.href = '/';
@@ -66,7 +67,7 @@ export const createNavbar = (navbarElement) => {
     const cartElement = jwtToken ? null : createCart();
 
     if (jwtToken) {
-        navbarContent.append(homeLink, dashboardLink, backOfficeLink, logoutLink);
+        navbarContent.append(homeLink, dashboardLink, backOfficeLink,reportLink, logoutLink);
     } else {
         navbarContent.append(homeLink, signupLink, loginLink, statisticLink, cartElement);
     }
