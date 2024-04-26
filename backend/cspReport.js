@@ -3,7 +3,7 @@ const router = express.Router();
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('database.db');
 
-router.post('/', csrfProtection, (req, res) => {
+router.post('/', (req, res) => {
   const { documentUri, referrer, violatedDirective, blockedUri, originalPolicy } = req.body;
 
   db.run('INSERT INTO CspReports (documentUri, referrer, violatedDirective, blockedUri, originalPolicy) VALUES (?, ?, ?, ?, ?)', 
