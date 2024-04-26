@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" >
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://cdn.jsdelivr.net; connect-src 'self' http://localhost:5000">
+    <meta http-equiv="Content-Security-Policy" content="form-action 'self'; img-src 'self' http://localhost:5173/public/assets/images; style-src https://cdn.jsdelivr.net 'nonce-your-nonce' 'sha256-SOHhLX6uYgxUm6GqAfZoFtI6B+jag8IEw+xtCNel45E='; script-src 'self' http://localhost:5173 'nonce-your-nonce' 'unsafe-inline'; object-src 'none'; base-uri 'self';">
 
     <title>Gestion des Produits</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
