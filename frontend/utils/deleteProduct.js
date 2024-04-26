@@ -1,17 +1,17 @@
 import { backendUrl } from "./constant";
-import { fetchCSRFToken } from './fetchCsrfToken'; // Importez la fonction pour récupérer le jeton CSRF
+import { fetchCSRFToken } from './fetchCsrfToken'; 
 
 async function deleteProduct(productId) {
     try {
         const token = localStorage.getItem('token');
-        const csrfToken = await fetchCSRFToken(); // Récupérez le jeton CSRF
+        const csrfToken = await fetchCSRFToken(); 
 
         const response = await fetch(`${backendUrl}/manage/${productId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
-                'x-csrf-token': csrfToken // Ajoutez le jeton CSRF à l'en-tête
+                'x-csrf-token': csrfToken 
             }
         });
 

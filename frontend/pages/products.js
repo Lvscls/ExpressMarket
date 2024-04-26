@@ -62,10 +62,10 @@ export function displayProducts(productListElement, products, isAdmin) {
                     const productInCartIndex = cart.findIndex(item => item.id === product.id);
             
                     if (productInCartIndex !== -1) {
-                        // Si le produit est déjà dans le panier, augmentez simplement sa quantité
+        
                         cart[productInCartIndex].quantity++;
                     } else {
-                        // Si le produit n'est pas dans le panier, ajoutez-le avec une quantité de 1
+        
                         cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
                     }
             
@@ -81,7 +81,7 @@ export function displayProducts(productListElement, products, isAdmin) {
             }
             
 
-            // Si l'utilisateur est un administrateur, ajoutez le bouton de suppression
+        
             if (isAdmin) {
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Supprimer';
@@ -122,11 +122,11 @@ export function displayProducts(productListElement, products, isAdmin) {
             productLink.appendChild(productPrice);
             productElement.appendChild(productLink);
 
-            // Ajoutez la carte du produit à la grille des produits
+   
             productGrid.appendChild(productElement);
         });
 
-        // Ajoutez la grille des produits au conteneur de la liste des produits
+
         productListElement.appendChild(productGrid);
     } catch (error) {
         console.error('Error displaying products:', error);

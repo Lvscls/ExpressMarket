@@ -3,10 +3,10 @@ import { backendUrl } from "./constant";
 export async function createProduct(productData) {
     console.log(productData)
     try {
-        // Récupérer le token d'authentification depuis le localStorage
+
         const token = localStorage.getItem('token');
 
-        // Vérifier si le token existe
+    
         if (!token) {
             throw new Error('Token d\'authentification manquant');
         }

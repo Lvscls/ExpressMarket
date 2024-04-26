@@ -20,8 +20,8 @@ function displayReports(reports) {
     reportList.appendChild(ul);
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    fetchCSPReports()
+window.addEventListener('DOMContentLoaded', async () => {
+    await fetchCSPReports()
         .then(reports => displayReports(reports))
         .catch(error => console.error(error));
 });

@@ -4,7 +4,8 @@ import { fetchCategories } from '../utils/fetchCategories.js';
 import { createProduct } from '../utils/createProduct.js';
 import { fetchCSRFToken } from '../utils/fetchCsrfToken.js';
 
-// Fonction pour créer le formulaire de produit
+
+
 async function createProductForm(categories) {
     const createInputElement = (type, name, placeholder, required) => {
         const input = document.createElement('input');
@@ -83,21 +84,21 @@ async function createProductForm(categories) {
     form.appendChild(categoryDropdown);
     form.appendChild(submitButton);
 
-    // Ajout du champ caché pour le jeton CSRF
+
     const csrfInput = document.createElement('input');
     csrfInput.type = 'hidden';
     csrfInput.name = '_csrf';
-    // Récupérer la valeur du jeton CSRF du cookie
+
     const csrfToken = await fetchCSRFToken();
 
     csrfInput.value = csrfToken;
-    // Ajout du champ caché au formulaire
+
     form.appendChild(csrfInput);
 
     return form;
 }
 
-// Fonction pour initialiser la page
+
 async function initializePage() {
     const navbarElement = document.getElementById('navbar');
     createNavbar(navbarElement);
@@ -110,13 +111,12 @@ async function initializePage() {
 
         displayProducts(productListElement, products, true);
 
-        // Appeler createProductForm et attendre la résolution de la promesse
-        const csrfToken = await fetchCSRFToken(); // Récupérer le jeton CSRF
 
-        const productForm = await createProductForm(categories); // Attendre la création du formulaire
+        const csrfToken = await fetchCSRFToken(); 
+
+        const productForm = await createProductForm(categories); 
         productFormContainer.appendChild(productForm);
 
-        // Écouter l'événement de soumission du formulaire
         productForm.addEventListener('submit', async function(event) {
             event.preventDefault();
             const body = {
@@ -130,14 +130,14 @@ async function initializePage() {
             for (const file of imagesFiles) {
                 body.images.push(file.name);
             }
-            body._csrf = csrfToken; // Utiliser le jeton CSRF récupéré
+            body._csrf = csrfToken; 
 
         
             try {
-                // Créer le produit en envoyant les données du formulaire
+     
                 const response = await createProduct(body);
         
-                // Afficher un message de succès ou effectuer d'autres actions
+
                 console.log('Produit créé avec succès:', response);
             } catch (error) {
                 console.error('Erreur lors de la création du produit:', error);
@@ -150,5 +150,4 @@ async function initializePage() {
 }
 
 document.addEventListener('DOMContentLoaded', initializePage);
-
 
