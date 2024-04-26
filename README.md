@@ -1,4 +1,5 @@
 # ExpressMarket
+By Enzo Herichard & Lilian Vasconcelos
 
 ## Installation
 
